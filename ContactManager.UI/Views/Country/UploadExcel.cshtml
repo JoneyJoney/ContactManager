@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "UploadExcel";
+}
+
+<div class="form-container">
+    <div class="field">
+        <h3>Upload File</h3>
+    </div>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="form-field flex">
+            <div class="w-25">
+                <label class="form-label">Upload File</label>
+            </div>
+            <div class="flex-1">
+                <input type="file" id="fileInput" />
+                <br />
+                <span class="text-danger" id="msgtxt"></span>
+            </div>
+        </div>
+
+        <div class="form-field flex">
+            <div class="w-25">
+            </div>
+            <div class="flex-1">
+                <button type="button" id="myBtn" class="button button-green-back">Upload</button>
+                <a type="button" asp-action="Index" asp-controller="Country" class="button button-red-back">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+
+    //get button id
+    const mybtn = document.getElementById("myBtn");
+
+    //click on button event
+
+    mybtn.addEventListener('click', function () {
+
+        var fileInput = document.getElementById('fileInput');
+        var msgtxt = document.getElementById('msgtxt');
+
+        msgtxt.innerHTML = "";
+
+        if (fileInput.validity.valid && fileInput.files.length > 0) {
+            alert("File Upload ho gayi hai");
+            var formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/Country/UploadFile', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        msgtxt.innerText = 'File uploaded successfully!';
+                        window.location.href = '/Country/Index';
+                    } else {
+                        msgtxt.innerText = 'Failed to upload file!';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    msgtxt.innerText = 'An error occurred while uploading the file!';
+                });
+        }
+        else
+        {
+            msgtxt.innerHTML = "Please Select File for Upload";
+            return false;
+        }
+       
+    });
+
+</script>
+

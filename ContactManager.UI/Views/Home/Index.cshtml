@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<!-- Band Description -->
+<section>
+    <div class="text-center">
+        <h2>The Contact Manager</h2>
+        <p><i>We love this Tool to Manage the Contact Management</i></p>
+        <p>
+            We have created a fictional band website.Streamline your connections with our Contact Management solution.
+            Elevate your organization's efficiency by effortlessly organizing and maintaining a comprehensive database of your contacts.
+            Seamlessly manage communication, enhance collaboration, and stay connected with ease.
+            Experience a smarter way to handle relationships – because every connection matters.
+        </p>
+    </div>
+
+</section>
+<!-- Slide Show -->
+<section>
+    <img class="mySlides" src="~/images/img_band_la.jpg"
+         style="width:100%">
+    <img class="mySlides" src="~/images/img_band_ny.jpg"
+         style="width:100%">
+    <img class="mySlides" src="~/images/img_band_chicago.jpg"
+         style="width:100%">
+</section>
+
+
+
+<script>
+    // Automatic Slideshow - change image every 3 seconds
+    var myIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 3000);
+    }
+</script>
