@@ -63,11 +63,34 @@ namespace ContactManager.InfraStructure.RepoImplementation
             return country;
         }
 
-        public Task<string> UploadCountry(DataTable dtcountry)
+        public async Task<string?> UploadCountry(DataTable dtcountry)
         {
             string constring = _configuration.GetConnectionString("");
             return "";
 
+        }
+
+        public async Task<string?> GetCountryExist(DataTable dtcountry)
+        {
+            string counexists = string.Empty;
+            if(dtcountry != null)
+            {
+                foreach(DataRow row in dtcountry.Rows)
+                {
+                    string CName = row["CountryName"].ToString();
+                    var countryExists = await _db.Countries.FirstOrDefaultAsync(x => x.CountryName == CName);
+                    if(countryExists != null)
+                    {
+                        counexists = string.Join(",",CName);
+                        CName = string.Empty;
+                    }
+                }
+                return counexists;
+            }
+            else
+            {
+                return counexists;
+            }
         }
     }
 }

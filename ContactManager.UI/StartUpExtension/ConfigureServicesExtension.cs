@@ -23,6 +23,7 @@ namespace ContactManager.UI.StartUpExtension
             services.AddScoped<ICountriesAdderServices, CountriesAdderServices>();
             services.AddScoped<ICountriesUpdateService, CountriesUpdaterServices>();
             services.AddScoped<ICountriesDeleteServices, CountriesDeleterServices>();
+            services.AddScoped<ICountriesUploaderServices, CountriesUploaderServices>();
 
 
 

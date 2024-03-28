@@ -16,6 +16,12 @@ namespace ContactManager.Application.ServicesImplementation
         {
             _countryRepository = countryRepository; 
         }
+
+        public async Task<string> GetCountryExist(DataTable dtcountry)
+        {
+            return await _countryRepository.GetCountryExist(dtcountry);
+        }
+
         public async Task<string> UploadCountry(DataTable dtcountry)
         {
             return await _countryRepository.UploadCountry(dtcountry);

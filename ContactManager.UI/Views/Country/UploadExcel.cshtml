@@ -45,7 +45,6 @@
         msgtxt.innerHTML = "";
 
         if (fileInput.validity.valid && fileInput.files.length > 0) {
-            alert("File Upload ho gayi hai");
             var formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
@@ -59,11 +58,13 @@
                         window.location.href = '/Country/Index';
                     } else {
                         msgtxt.innerText = 'Failed to upload file!';
+                        window.location.href = '/Country/Index';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     msgtxt.innerText = 'An error occurred while uploading the file!';
+                    window.location.href = '/Country/Index';
                 });
         }
         else

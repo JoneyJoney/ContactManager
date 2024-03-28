@@ -10,5 +10,7 @@ namespace ContactManager.Application.ServicesInterface
     public interface ICountriesUploaderServices
     {
         Task<string> UploadCountry(DataTable dtcountry);
+        Task<string> GetCountryExist(DataTable dtcountry);
+
     }
 }

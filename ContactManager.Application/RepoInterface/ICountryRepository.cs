@@ -13,12 +13,12 @@ namespace ContactManager.Application.RepoInterface
     {
         Task<List<Country>> GetCountries();
         Task<Country> GetCountryByID(int CID);
-
         Task<Country> FindCountryName(string CName);
         Task<Country> AddCountry(Country country);
         Task<Country> UpdateCountry(Country country);
         Task<bool> DeleteCountry(int countryId);
 
         Task<string> UploadCountry(DataTable dtcountry);
+        Task<string> GetCountryExist(DataTable dtcountry);
     }
 }

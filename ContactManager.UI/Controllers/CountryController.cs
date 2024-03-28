@@ -2,6 +2,7 @@
 using ContactManager.Application.RepoInterface;
 using ContactManager.Application.ServicesInterface;
 using ContactManager.Domain.Models;
+using ContactManager.UI.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -17,15 +18,18 @@ namespace ContactManager.UI.Controllers
         private readonly ICountriesAdderServices _countriesAdderServices;
         private readonly ICountriesUpdateService _countriesUpdateServices;
         private readonly ICountriesDeleteServices _countriesDeleteServices;
+        private readonly ICountriesUploaderServices _countriesUploaderServices;
         private readonly IWebHostEnvironment _environment;
         public CountryController(ICountriesGetterService countryRepository,ICountriesAdderServices countriesAdderServices, 
                                 ICountriesUpdateService countriesUpdateService,ICountriesDeleteServices countriesDeleteServices,
+                                ICountriesUploaderServices countriesUploaderServices,
                                 IWebHostEnvironment environment) 
         { 
             _countryRepository = countryRepository;
             _countriesAdderServices = countriesAdderServices;
             _countriesUpdateServices = countriesUpdateService;
             _countriesDeleteServices = countriesDeleteServices;
+            _countriesUploaderServices = countriesUploaderServices;
             _environment = environment;
         }
         public IActionResult Index()
@@ -165,13 +169,40 @@ namespace ContactManager.UI.Controllers
                     formFile.CopyTo(stream);
                 }
 
+                DataSet dsTables = ReadExcelToDataTable.ReadExcelFile(filePath);
+                DataTable? dtCountry = dsTables.Tables["CName"];
+                if(dtCountry != null)
+                {
+                    if(dtCountry.Rows.Count > 0)
+                    {
+                        string checkcountexists = await _countriesUploaderServices.GetCountryExist(dtCountry);
+                        if (checkcountexists == "")
+                        {
+                            TempData["SuccessMessage"] = "File Data Imported Successfully";
+                            return Ok();
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = $"Country are already in the database {checkcountexists}";
+                            return BadRequest("Country are already in the database");
+                        }
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "No data in the file";
+                        return BadRequest("No data in the file.");
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Issue in retreiving file data";
+                    return BadRequest("Issue in retreiving file data.");
+                }
 
-
-
-                return Ok();
             }
             else
             {
+                TempData["ErrorMessage"] = "No file uploaded";
                 return BadRequest("No file uploaded.");
             }
         }
